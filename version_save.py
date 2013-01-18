@@ -19,7 +19,7 @@ file_directory = dirname(full_file_path)
 previous_time = getctime(full_file_path)
 
 
-if (time() - previous_time) >= 3: # Check if 5 minutes has passed (300 seconds).
+if (time() - previous_time) >= 300: # Check if 5 minutes has passed (300 seconds).
 	try: # Check if there is already a number at the end of the scene.
 		version_number = int(file_name[-4:])
 		version_number += 1
