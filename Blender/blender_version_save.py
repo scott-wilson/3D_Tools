@@ -46,21 +46,29 @@ class VersionSave(bpy.types.Operator):
         else:
             bpy.ops.wm.save_as_mainfile('EXEC_AREA')
             self.full_file_path = bpy.data.filepath
-            self.previous_time = getctime(self.full_file_path)
             self.file_name = split(self.full_file_path)[1][:-6]
             self.file_directory = dirname(self.full_file_path)
 
             # 2. Check if 5 minutes has passed since last save. If it has, save new version. Else, just save.
+            
+            self.version_number = '-0001'
+            while exists(join(self.file_directory, self.file_name + self.version_number + '.blend')) == True:
+                self.old_version_number = self.version_number
+                self.version_number = int(self.version_number[1:])
+                self.version_number += 1
+                self.append_number = ''
+                for i in range(4 - len(str(self.version_number))):
+                    self.append_number += '0'
+                self.append_number += str(self.version_number)
+                self.version_number = '-' + self.append_number
+
+            try:
+                self.previous_time = getctime(join(self.file_directory, self.file_name + self.old_version_number + '.blend'))
+
+            except FileNotFoundError:
+                self.previous_time = getctime(self.full_file_path)
+
             if (time() - self.previous_time) >= 300: # Check if 5 minutes has passed (300 seconds).
-                self.version_number = '-0001'
-                while exists(join(self.file_directory, self.file_name + self.version_number + '.blend')) == True:
-                    self.version_number = int(self.version_number[1:])
-                    self.version_number += 1
-                    self.append_number = ''
-                    for i in range(4 - len(str(self.version_number))):
-                        self.append_number += '0'
-                    self.append_number += str(self.version_number)
-                    self.version_number = '-' + self.append_number
                 self.new_file_name = self.file_name + self.version_number
                 copyfile(join(self.file_directory, self.file_name + '.blend'), join(self.file_directory, self.new_file_name + '.blend'))
 
