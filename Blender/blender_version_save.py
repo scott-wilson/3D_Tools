@@ -52,6 +52,7 @@ class VersionSave(bpy.types.Operator):
             # 2. Check if 5 minutes has passed since last save. If it has, save new version. Else, just save.
             
             self.version_number = '-0001'
+            self.old_version_number = self.version_number
             while exists(join(self.file_directory, self.file_name + self.version_number + '.blend')) == True:
                 self.old_version_number = self.version_number
                 self.version_number = int(self.version_number[1:])
