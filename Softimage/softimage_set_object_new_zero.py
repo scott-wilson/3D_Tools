@@ -38,7 +38,7 @@ if objects_list > 0:
 		if Application.ActiveSceneRoot.Name != object.parent.Name:
 			Application.ParentObj(object.parent, new_null)
 		Application.ParentObj(new_null, object)
-#		Application.SetValue("{null_object}.visibility.viewvis".format(null_object = new_null), False, "")
-#		Application.SetValue("{null_object}.visibility.rendvis".format(null_object = new_null), False, "")
+		Application.SetValue("{null_object}.visibility.viewvis".format(null_object = new_null), False, "")
+		Application.SetValue("{null_object}.visibility.rendvis".format(null_object = new_null), False, "")
 		Application.SetValue("{null_object}.Name".format(null_object = new_null), "{object_name}_home".format(object_name = object), "")
 		
